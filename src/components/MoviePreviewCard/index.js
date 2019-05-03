@@ -34,11 +34,7 @@ function MediaCard(props) {
         title={`Poster of ${movie.Title}`}
       />
       <CardContent>
-        <Typography
-          gutterBottom
-          variant="title"
-          className={classes.title}
-        >
+        <Typography gutterBottom variant="title" className={classes.title}>
           {`${movie.Title} (${movie.Year})`}
         </Typography>
       </CardContent>

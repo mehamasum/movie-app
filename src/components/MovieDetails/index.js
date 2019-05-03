@@ -21,16 +21,21 @@ const styles = theme => ({
 function DetailsCard(props) {
   const { classes, movie } = props;
   const [details, setDetails] = useState(null);
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(
-        `${OMDB_URL}&i=${encodeURIComponent(movie.imdbID)}`
-      );
-      const json = await response.json();
-      setDetails(json);
-    };
-    fetchData();
-  }, []);
+
+  useEffect(
+    () => {
+      const fetchData = async () => {
+        const response = await fetch(
+          `${OMDB_URL}&i=${encodeURIComponent(movie.imdbID)}`
+        );
+        const json = await response.json();
+        setDetails(json);
+      };
+      fetchData();
+    },
+    // eslint-disable-next-line
+    []
+  );
 
   return (
     <Card className={classes.card}>

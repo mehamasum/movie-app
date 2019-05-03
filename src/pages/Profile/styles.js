@@ -1,5 +1,5 @@
 export default theme => ({
-    content: {
-        margin: theme.spacing.unit * 2
-    }
+  content: {
+    margin: theme.spacing.unit * 2
+  }
 });

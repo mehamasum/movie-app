@@ -12,8 +12,6 @@ const INITIAL_FIELD_VALUES = {
 function LoginForm(props) {
   const { classes } = props;
   const [values, setValues] = useState(INITIAL_FIELD_VALUES);
-  const [feedback, setFeedback] = useState(null);
-  const [requesting, setRequesting] = useState(false);
 
   const onSubmit = e => {
     e.preventDefault();
