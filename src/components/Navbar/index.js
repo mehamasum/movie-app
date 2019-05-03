@@ -16,8 +16,6 @@ import { withRouter } from 'react-router';
 import Link from '@material-ui/core/Link';
 
 const PrimarySearchAppBar = props => {
-  console.log(props);
-
   const { isAuthenticated, onLogout } = useContext(AuthContext);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
