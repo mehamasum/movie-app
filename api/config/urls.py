@@ -11,5 +11,8 @@ urlpatterns = [
     path('', include(router.urls)),
     path('api-auth/', include('rest_framework.urls',
                               namespace='rest_framework')),
-    path('api/login/', drf_views.obtain_auth_token)
+    path('api/login/', drf_views.obtain_auth_token),
+    path('api/collection/', views.MovieCollectionView.as_view()),
+    path('api/collection/<int:pk>/',
+         views.MovieCollectionDetailView.as_view()),
 ]

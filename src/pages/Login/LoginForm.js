@@ -5,8 +5,8 @@ import Button from '@material-ui/core/Button';
 import styles from './styles';
 
 const INITIAL_FIELD_VALUES = {
-  username: 'admin',
-  password: 'adminadmin'
+  username: '',
+  password: ''
 };
 
 function LoginForm(props) {

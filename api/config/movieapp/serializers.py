@@ -1,5 +1,6 @@
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
+from config.movieapp.models import MovieCollection
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
@@ -12,3 +13,14 @@ class GroupSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Group
         fields = ('url', 'name')
+
+
+class MovieCollectionSerializer(serializers.HyperlinkedModelSerializer):
+    class Meta:
+        model = MovieCollection
+        fields = (
+            'id',
+            'user',
+            'movie',
+        )
+        read_only_fields = ('id', 'user')

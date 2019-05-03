@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 class MovieCollection(models.Model):
     user = models.ForeignKey(User, models.CASCADE)
-    movie = models.CharField()
+    movie = models.CharField(max_length=16)
     saved_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
