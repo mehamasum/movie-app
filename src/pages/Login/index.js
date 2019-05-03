@@ -6,15 +6,27 @@ import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 import { Paper } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
+import axios from 'axios';
 
 function Login(props) {
   console.log(props);
   const { isAuthenticated, onLogin } = useContext(AuthContext);
   const { location } = props;
 
-  const onSubmit = event => {
-    event.preventDefault();
-    onLogin();
+  const onSubmit = values => {
+    const config = {
+      headers: { 'content-type': 'application/json' }
+    };
+
+    axios
+      .post('/api/login/', JSON.stringify(values), config)
+      .then(response => {
+        onLogin(response.data.token);
+      })
+      .catch(error => {
+        // TODO
+        console.log('Login failed', error);
+      });
   };
 
   if (isAuthenticated) {

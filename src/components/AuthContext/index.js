@@ -8,9 +8,9 @@ function AuthProvider(props) {
     !!localStorage.getItem(LOCAL_STORAGE_KEY) || false
   );
 
-  const login = () => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, 'dummytoken');
-    setTimeout(() => setIsAuthenticated(true), 1000);
+  const login = token => {
+    localStorage.setItem(LOCAL_STORAGE_KEY, token);
+    setIsAuthenticated(true);
   };
 
   const logout = () => {
