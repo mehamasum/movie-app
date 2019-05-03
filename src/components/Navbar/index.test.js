@@ -24,7 +24,7 @@ describe('Navbar component', () => {
     const wrapper = mount(
       <AuthContext.Provider value={{ isAuthenticated: true }}>
         <MemoryRouter>
-          <Navbar />
+          <Navbar searchable/>
         </MemoryRouter>
       </AuthContext.Provider>
     );

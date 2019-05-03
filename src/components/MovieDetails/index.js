@@ -18,7 +18,7 @@ const styles = theme => ({
   }
 });
 
-function MediaCard(props) {
+function DetailsCard(props) {
   const { classes, movie } = props;
   const [details, setDetails] = useState(null);
   useEffect(() => {
@@ -27,7 +27,6 @@ function MediaCard(props) {
         `${OMDB_URL}&i=${encodeURIComponent(movie.imdbID)}`
       );
       const json = await response.json();
-      console.log(json);
       setDetails(json);
     };
     fetchData();
@@ -50,8 +49,8 @@ function MediaCard(props) {
   );
 }
 
-MediaCard.propTypes = {
+DetailsCard.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(MediaCard);
+export default withStyles(styles)(DetailsCard);
