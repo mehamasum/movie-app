@@ -9,14 +9,7 @@ import queryString from 'query-string';
 import Pagination from '../../components/Pagination';
 import Modal from '@material-ui/core/Modal';
 import MovieDetails from '../../components/MovieDetails';
-
-const {
-    REACT_APP_OMDB_API_URL: BASE_URL,
-    REACT_APP_OMDB_API_KEY: API_KEY,
-} = process.env;
-
-
-const URL = `${BASE_URL}?apikey=${API_KEY}&`;
+import {OMDB_URL} from "../../utils/index";
 
 function Home(props) {
     const [movieData, setMovieData] = useState(null);
@@ -25,10 +18,9 @@ function Home(props) {
 
 
     useEffect(() => {
-
         const {page, q: query} = queryString.parse(props.location.search);
         if (!query) return;
-        const searchAPI = query => fetch(`${URL}&s=${encodeURIComponent(query)}&page=${page}`);
+        const searchAPI = query => fetch(`${OMDB_URL}&s=${encodeURIComponent(query)}&page=${page}`);
         const searchAPIDebounced = AwesomeDebouncePromise(searchAPI, 500);
 
         const fetchData = async () => {
@@ -74,13 +66,7 @@ function Home(props) {
             {loading ? <LinearProgress className={classes.progress}/> : null}
             <div className={classes.content}>
                 <MovieList
-                    movies={movieData && movieData.Search ? movieData.Search.map(movie => ({
-                            id: movie.imdbID,
-                            title: movie.Title,
-                            year: movie.Year,
-                            poster: movie.Poster,
-                        })) : []
-                    }
+                    movies={movieData && movieData.Search ? movieData.Search : []}
                     onDetailsClick={onDetailsClick}
                 />
 
@@ -102,12 +88,7 @@ function Home(props) {
                 onClose={handleModalClose}
             >
                 <div className={classes.modal}>
-                {selectedMovie && <MovieDetails
-                    title={selectedMovie.title}
-                    year={selectedMovie.year}
-                    poster={selectedMovie.poster}
-                    onDetailsClick={() => console.log(selectedMovie.id)}
-                />}
+                    {selectedMovie && <MovieDetails movie={selectedMovie}/>}
                 </div>
             </Modal>
         </div>

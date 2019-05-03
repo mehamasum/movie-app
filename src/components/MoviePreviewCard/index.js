@@ -7,6 +7,7 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import {getPosterUrl} from '../../utils';
 
 const styles = theme => ({
     card: {
@@ -23,18 +24,19 @@ const styles = theme => ({
     }
 });
 
+
 function MediaCard(props) {
-    const {classes, title, year, poster, onDetailsClick} = props;
+    const {classes, movie, onDetailsClick} = props;
     return (
         <Card className={classes.card}>
             <CardMedia
                 className={classes.media}
-                image={poster}
-                title={`Poster of ${title}`}
+                image={getPosterUrl(movie.Poster)}
+                title={`Poster of ${movie.Title}`}
             />
             <CardContent>
                 <Typography gutterBottom variant="h5" component="h2" className={classes.title}>
-                    {`${title} (${year})`}
+                    {`${movie.Title} (${movie.Year})`}
                 </Typography>
             </CardContent>
             <CardActions>

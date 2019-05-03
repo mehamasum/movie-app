@@ -15,12 +15,10 @@ const MovieList = props => {
 
     return <div className={classes.root}>
         <Grid container spacing={16}>
-            {movies.map(movie =>
-                <Grid item xs={12} sm={6} md={4} key={movie.id}>
+            {movies.map((movie, index) =>
+                <Grid item xs={12} sm={6} md={4} key={index}>
                     <MoviePreviewCard
-                        title={movie.title}
-                        year={movie.year}
-                        poster={movie.poster}
+                        movie={movie}
                         onDetailsClick={onDetailsClick(movie)}
                     />
                 </Grid>
