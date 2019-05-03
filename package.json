@@ -18,13 +18,19 @@
     "enzyme-adapter-react-16": "^1.12.1",
     "jest": "^24.7.1",
     "jest-enzyme": "^7.0.2",
-    "sinon": "^7.3.2"
+    "sinon": "^7.3.2",
+    "prettier": "^1.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint src --max-warnings 0 && stylelint src --max-warnings 0 --fix",
+    "format": "prettier --single-quote --write \"src/**/*.{js,jsx,json,css}\""
+  },
+  "prettier": {
+    "singleQuote": true
   },
   "eslintConfig": {
     "extends": "react-app"
