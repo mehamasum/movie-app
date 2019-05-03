@@ -1,3 +1,5 @@
-const styles = theme => ({});
-
-export default styles;
+export default theme => ({
+    content: {
+        margin: theme.spacing.unit * 2
+    }
+});

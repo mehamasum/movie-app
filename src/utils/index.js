@@ -15,3 +15,4 @@ const {
 } = process.env;
 
 export const OMDB_URL = `${BASE_URL}?apikey=${API_KEY}&`;
+export const LOCAL_STORAGE_MOVIE_LIST_KEY = 'movieAppSavedList';

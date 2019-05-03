@@ -36,8 +36,7 @@ function MediaCard(props) {
       <CardContent>
         <Typography
           gutterBottom
-          variant="h5"
-          component="h2"
+          variant="title"
           className={classes.title}
         >
           {`${movie.Title} (${movie.Year})`}
