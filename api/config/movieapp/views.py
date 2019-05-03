@@ -30,8 +30,20 @@ class MovieCollectionView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, format=None):
-        snippets = MovieCollection.objects.filter(user=self.request.user)
-        serializer = MovieCollectionSerializer(snippets,
+        movie = self.request.query_params.get('movie', None)
+
+        if movie:
+            try:
+                instance = MovieCollection.objects.get(movie=movie,
+                                                       user=self.request.user)
+            except MovieCollection.DoesNotExist:
+                raise NotFound
+            serializer = MovieCollectionSerializer(
+                instance, context={'request': request})
+            return Response(serializer.data)
+
+        instances = MovieCollection.objects.filter(user=self.request.user)
+        serializer = MovieCollectionSerializer(instances,
                                                many=True,
                                                context={'request': request})
         return Response(serializer.data)
