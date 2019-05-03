@@ -19,7 +19,7 @@ const MovieList = props => {
     <div className={classes.root}>
       <Grid container spacing={16}>
         {movies.map((movie, index) => (
-          <Grid item xs={12} sm={6} md={4} key={index}>
+          <Grid item xs={12} sm={6} md={4} lg={3} key={index}>
             <MoviePreviewCard
               movie={movie}
               onDetailsClick={onDetailsClick(movie)}

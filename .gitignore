@@ -297,3 +297,4 @@ api/static/
 
 
 api/*.sqlite3
+.vscode

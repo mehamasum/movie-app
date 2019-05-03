@@ -13,6 +13,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { withRouter } from 'react-router';
+import Link from '@material-ui/core/Link';
 
 const PrimarySearchAppBar = props => {
   console.log(props);
@@ -84,8 +85,11 @@ const PrimarySearchAppBar = props => {
             color="inherit"
             noWrap
           >
-            Movie App
+            <Link color="inherit" href={'/'} className={classes.link}>
+              Movie App
+            </Link>
           </Typography>
+
           <div className={classes.search}>
             <div className={classes.searchIcon}>
               <SearchIcon />
