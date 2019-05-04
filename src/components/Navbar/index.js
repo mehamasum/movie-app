@@ -14,6 +14,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import { withRouter } from 'react-router';
 import Link from '@material-ui/core/Link';
+import debounce from 'awesome-debounce-promise';
 
 const PrimarySearchAppBar = props => {
   const { isAuthenticated, onLogout } = useContext(AuthContext);
@@ -73,6 +74,13 @@ const PrimarySearchAppBar = props => {
     );
   };
 
+  const debouncedOnSearchQueryChange = debounce(props.onSearchQueryChange, 500);
+
+  function handleChange(event) {
+    const query = event.target.value;
+    debouncedOnSearchQueryChange(query);
+  }
+
   return (
     <div className={classes.root}>
       <AppBar position="static">
@@ -100,7 +108,7 @@ const PrimarySearchAppBar = props => {
                     root: classes.inputRoot,
                     input: classes.inputInput
                   }}
-                  onChange={props.onSearchQueryChange}
+                  onChange={handleChange}
                 />
               </div>
             </>

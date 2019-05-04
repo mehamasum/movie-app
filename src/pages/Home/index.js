@@ -4,13 +4,17 @@ import MovieList from '../../components/MovieList';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import AwesomeDebouncePromise from 'awesome-debounce-promise';
 import queryString from 'query-string';
 import Pagination from '../../components/Pagination';
 import MovieDetailsModal from '../../components/MovieDetailsModal';
 import { OMDB_URL } from '../../utils/index';
 import { Typography } from '@material-ui/core';
 const PAGE_SIZE = 10;
+
+export const makeURL = (query, page) =>
+  `${OMDB_URL}&s=${encodeURIComponent(query)}&page=${page}`;
+
+const searchAPI = (query, page) => fetch(makeURL(query, page));
 
 function Home(props) {
   const [movieData, setMovieData] = useState(null);
@@ -20,12 +24,9 @@ function Home(props) {
   useEffect(() => {
     const { page, q: query } = queryString.parse(props.location.search);
     if (!query) return;
-    const searchAPI = query =>
-      fetch(`${OMDB_URL}&s=${encodeURIComponent(query)}&page=${page}`);
-    const searchAPIDebounced = AwesomeDebouncePromise(searchAPI, 500);
 
     const fetchData = async () => {
-      const response = await searchAPIDebounced(query);
+      const response = await searchAPI(query, page);
       const json = await response.json();
       setLoading(false);
       setMovieData(json);
@@ -44,8 +45,7 @@ function Home(props) {
 
   const { classes, history } = props;
 
-  const onSearchQueryChange = event => {
-    const query = event.target.value;
+  const onSearchQueryChange = query => {
     history.push(`/?q=${query}&page=${1}`);
   };
 
