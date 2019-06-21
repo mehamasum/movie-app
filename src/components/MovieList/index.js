@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import MoviePreviewCard from '../MoviePreviewCard';
+import MovieDetailsModal from '../MovieDetailsModal';
 import { withStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -11,7 +12,19 @@ const styles = theme => ({
 });
 
 const MovieList = props => {
-  const { classes, movies, onDetailsClick } = props;
+  const [selectedMovie, setSelectedMovie] = useState(null);
+
+  const handleModalClose = () => {
+    props.onModalClose && props.onModalClose();
+    setSelectedMovie(null);
+  };
+
+  const onDetailsClick = movie => event => {
+    setSelectedMovie(movie);
+  };
+
+
+  const { classes, movies } = props;
   if (movies.length === 0)
     return <Typography variant="h5">No movies found</Typography>;
 
@@ -27,6 +40,7 @@ const MovieList = props => {
           </Grid>
         ))}
       </Grid>
+      <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} />
     </div>
   );
 };

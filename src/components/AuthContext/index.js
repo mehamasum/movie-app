@@ -1,20 +1,19 @@
 import React, { useState } from 'react';
+import {LOCAL_STORAGE_TOKEN_KEY} from '../../utils'
 const AuthContext = React.createContext();
-
-const LOCAL_STORAGE_KEY = 'movieAppToken';
 
 function AuthProvider(props) {
   const [isAuthenticated, setIsAuthenticated] = useState(
-    !!localStorage.getItem(LOCAL_STORAGE_KEY) || false
+    !!localStorage.getItem(LOCAL_STORAGE_TOKEN_KEY) || false
   );
 
   const login = token => {
-    localStorage.setItem(LOCAL_STORAGE_KEY, token);
+    localStorage.setItem(LOCAL_STORAGE_TOKEN_KEY, token);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    localStorage.removeItem(LOCAL_STORAGE_KEY);
+    localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
     setIsAuthenticated(false);
   };
 

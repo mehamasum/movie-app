@@ -8,10 +8,7 @@ export default theme => ({
     flexGrow: 1
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block'
-    }
+    display: 'block'
   },
   search: {
     position: 'relative',

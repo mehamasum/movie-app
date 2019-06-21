@@ -22,5 +22,9 @@ class MovieCollectionSerializer(serializers.HyperlinkedModelSerializer):
             'id',
             'user',
             'movie',
+            'title',
+            'year',
+            'poster',
+            'saved_at'
         )
         read_only_fields = ('id', 'user')

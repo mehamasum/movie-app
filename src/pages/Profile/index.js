@@ -3,32 +3,45 @@ import Navbar from '../../components/Navbar';
 import MovieList from '../../components/MovieList';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
-import MovieDetailsModal from '../../components/MovieDetailsModal';
-import { LOCAL_STORAGE_MOVIE_LIST_KEY as KEY } from '../../utils';
+import {populateHeaderWithAuthToken, convertToOMDBFormat} from '../../utils';
 import { Typography } from '@material-ui/core/';
+import axios from 'axios';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 function Profile(props) {
-  const [movieData, setMovieData] = useState(null);
-  const [selectedMovie, setSelectedMovie] = useState(null);
+  const [savedMovies, setSavedMovies] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const fetchSavedMovies = () => {
+    const config = {
+      headers: populateHeaderWithAuthToken()
+    };
+    setLoading(true);
+    axios
+      .get('/api/collection/', config)
+      .then(response => {
+        setLoading(false);
+        setSavedMovies(response.data.map(savedMovie => convertToOMDBFormat(savedMovie)));
+      })
+      .catch(error => {
+        // TODO
+        console.log('fetchSavedMovies failed', error);
+      });
+  }
 
   useEffect(() => {
-    const savedMovies = JSON.parse(localStorage.getItem(KEY)) || {};
-    setMovieData(Object.keys(savedMovies).map(key => savedMovies[key]));
+    fetchSavedMovies();
   }, []);
 
-  const handleModalClose = savedMovies => () => {
-    setMovieData(Object.keys(savedMovies).map(key => savedMovies[key]));
-    setSelectedMovie(null);
-  };
-
-  const onDetailsClick = movie => event => {
-    setSelectedMovie(movie);
+  const onModalClose = () => {
+    // fetchSavedMovies();
   };
 
   const { classes } = props;
   return (
     <div>
       <Navbar />
+      {loading ? <LinearProgress className={classes.progress} /> : null}
       <div className={classes.content}>
         <Typography
           className={classes.title}
@@ -36,11 +49,10 @@ function Profile(props) {
           color="primary"
           noWrap
         >
-          Here is the list of movies you saved
+          Saved movies
         </Typography>
-        <MovieList movies={movieData || []} onDetailsClick={onDetailsClick} />
+        <MovieList movies={savedMovies} onModalClose={onModalClose} />
       </div>
-      <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} />
     </div>
   );
 }

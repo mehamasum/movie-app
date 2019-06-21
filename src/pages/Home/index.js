@@ -6,7 +6,6 @@ import styles from './styles';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import queryString from 'query-string';
 import Pagination from '../../components/Pagination';
-import MovieDetailsModal from '../../components/MovieDetailsModal';
 import { OMDB_URL } from '../../utils/index';
 import { Typography } from '@material-ui/core';
 const PAGE_SIZE = 10;
@@ -19,7 +18,6 @@ const searchAPI = (query, page) => fetch(makeURL(query, page));
 function Home(props) {
   const [movieData, setMovieData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [selectedMovie, setSelectedMovie] = useState(null);
 
   useEffect(() => {
     const { page, q: query } = queryString.parse(props.location.search);
@@ -34,14 +32,6 @@ function Home(props) {
     setLoading(true);
     fetchData();
   }, [props.location.search]);
-
-  const handleModalClose = () => () => {
-    setSelectedMovie(null);
-  };
-
-  const onDetailsClick = movie => event => {
-    setSelectedMovie(movie);
-  };
 
   const { classes, history } = props;
 
@@ -73,7 +63,6 @@ function Home(props) {
 
         <MovieList
           movies={movieData && movieData.Search ? movieData.Search : []}
-          onDetailsClick={onDetailsClick}
         />
 
         {movieData && movieData.totalResults > PAGE_SIZE ? (
@@ -85,7 +74,6 @@ function Home(props) {
           />
         ) : null}
       </div>
-      <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} />
     </div>
   );
 }
