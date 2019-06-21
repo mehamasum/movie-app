@@ -30,6 +30,10 @@ class MovieCollectionView(APIView):
     permission_classes = (IsAuthenticated, )
 
     def get(self, request, format=None):
+        """
+        Returns user's entire collection
+        If movie param is provided, checks whethear a movie is in collection of user
+        """
         movie = self.request.query_params.get('movie', None)
 
         if movie:
@@ -49,6 +53,9 @@ class MovieCollectionView(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
+        """
+        Adds a movie to collections
+        """
         serializer = MovieCollectionSerializer(data=request.data,
                                                context={'request': request})
         if serializer.is_valid():
@@ -59,6 +66,9 @@ class MovieCollectionView(APIView):
 
 class MovieCollectionDetailView(APIView):
     def delete(self, request, pk, format=None):
+        """
+        Deletes a movie to collections
+        """
         try:
             instance = MovieCollection.objects.get(pk=pk,
                                                    user=self.request.user)
