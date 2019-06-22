@@ -91,39 +91,41 @@ function DetailsModal(props) {
 
   return (
     <>
-    <Modal
-      aria-labelledby="simple-modal-title"
-      aria-describedby="simple-modal-description"
-      open={!!movie}
-      onClose={onClose}
-    >
-      <div className={classes.modal}>
-        {movie && (
-          <div>
-            <Fab
-              className={classes.fab}
-              color="secondary"
-              onClick={toggleSaveToList}
-              disabled={loading}
-            >
-              {loading ? '...' : saved ? <DeleteIcon /> : <AddIcon />}
-            </Fab>
-            <MovieDetails movie={movie} />
-          </div>
-        )}
-      </div>
-    </Modal>
-    <Snackbar
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'left',
-      }}
-      open={!!open}
-      autoHideDuration={1000}
-      onClose={handleClose}
-      message={open}
-    />
-  </>
+      <Modal
+        aria-labelledby="simple-modal-title"
+        aria-describedby="simple-modal-description"
+        open={!!movie}
+        onClose={onClose}
+      >
+        <div className={classes.modal}>
+          {movie && (
+            <div>
+              <Fab
+                className={classes.fab}
+                color="secondary"
+                onClick={toggleSaveToList}
+                disabled={loading}
+              >
+                {loading ? '...' : saved ? 
+                  <DeleteIcon data-testid="delete-btn"/> : 
+                  <AddIcon data-testid="add-btn"/>}
+              </Fab>
+              <MovieDetails movie={movie} />
+            </div>
+          )}
+        </div>
+      </Modal>
+      <Snackbar
+        anchorOrigin={{
+          vertical: 'bottom',
+          horizontal: 'left',
+        }}
+        open={!!open}
+        autoHideDuration={1000}
+        onClose={handleClose}
+        message={open}
+      />
+    </>
   );
 }
 

@@ -16,9 +16,11 @@
     "react-scripts": "3.0.0"
   },
   "devDependencies": {
+    "@testing-library/react": "^8.0.1",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
     "jest": "^24.7.1",
+    "jest-dom": "^3.5.0",
     "jest-enzyme": "^7.0.2",
     "prettier": "^1.17.0",
     "react-testing-library": "^7.0.0",
