@@ -15,8 +15,6 @@ const {
 } = process.env;
 
 export const OMDB_URL = `${BASE_URL}?apikey=${API_KEY}&`;
-export const LOCAL_STORAGE_MOVIE_LIST_KEY = 'movieAppSavedList';
-
 export const LOCAL_STORAGE_TOKEN_KEY = 'movieAppToken';
 
 export const populateHeaderWithAuthToken = (headers={}) => {
@@ -32,4 +30,12 @@ export const convertToOMDBFormat = savedMovie => ({
   Poster: savedMovie['poster'] || '',
   Year: savedMovie['year'],
   imdbID: savedMovie['movie']
+})
+
+
+export const convertToNativeFormat = movie => ({
+  title: movie['Title'],
+  poster: movie['Poster'] || '',
+  year: movie['Year'],
+  movie: movie['imdbID']
 })

@@ -41,12 +41,12 @@ function DetailsCard(props) {
     <Card className={classes.card}>
       <CardMedia
         className={classes.media}
-        image={getPosterUrl(details && details.Poster || movie.Poster)}
-        title={`Poster of ${details && details.Title || movie.Title}`}
+        image={getPosterUrl((details && details.Poster) || movie.Poster)}
+        title={`Poster of ${(details && details.Title) || movie.Title}`}
       />
       <CardContent>
         <Typography gutterBottom variant="h5" component="h2">
-          {details && details.Title || movie.Title}
+          {(details && details.Title) || movie.Title}
         </Typography>
         {details ? <MovieDetails movie={details} /> : 'Loading...'}
       </CardContent>

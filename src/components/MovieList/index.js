@@ -15,7 +15,6 @@ const MovieList = props => {
   const [selectedMovie, setSelectedMovie] = useState(null);
 
   const handleModalClose = () => {
-    props.onModalClose && props.onModalClose();
     setSelectedMovie(null);
   };
 
@@ -24,7 +23,7 @@ const MovieList = props => {
   };
 
 
-  const { classes, movies } = props;
+  const { classes, movies, onDeleteFromCollection } = props;
   if (movies.length === 0)
     return <Typography variant="h5">No movies found</Typography>;
 
@@ -40,7 +39,7 @@ const MovieList = props => {
           </Grid>
         ))}
       </Grid>
-      <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} />
+      <MovieDetailsModal movie={selectedMovie} onClose={handleModalClose} onDeleteFromCollection={onDeleteFromCollection}/>
     </div>
   );
 };

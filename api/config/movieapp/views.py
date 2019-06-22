@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import NotFound
-
+from .paginations import SavedTimeBasedPagination
 
 class UserViewSet(viewsets.ModelViewSet):
     """
@@ -46,10 +46,18 @@ class MovieCollectionView(APIView):
                 instance, context={'request': request})
             return Response(serializer.data)
 
-        instances = MovieCollection.objects.filter(user=self.request.user)
-        serializer = MovieCollectionSerializer(instances,
-                                               many=True,
+        queryset = MovieCollection.objects.filter(user=self.request.user)
+        paginator = SavedTimeBasedPagination()
+
+        page = paginator.paginate_queryset(queryset, self.request, view=self)
+        
+        if page is not None:
+            serializer = MovieCollectionSerializer(page, many=True,
                                                context={'request': request})
+            return paginator.get_paginated_response(serializer.data)
+
+        serializer = MovieCollectionSerializer(queryset, many=True,
+                                                context={'request': request})
         return Response(serializer.data)
 
     def post(self, request, format=None):

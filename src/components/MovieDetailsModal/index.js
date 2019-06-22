@@ -7,20 +7,20 @@ import DeleteIcon from '@material-ui/icons/Delete';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 import axios from 'axios';
-import {populateHeaderWithAuthToken, convertToOMDBFormat} from '../../utils';
-
+import {populateHeaderWithAuthToken, convertToNativeFormat} from '../../utils';
+import Snackbar from '@material-ui/core/Snackbar';
 
 function DetailsModal(props) {
   const [saved, setSaved] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const config = {
-    headers: populateHeaderWithAuthToken()
-  };
+  const [open, setOpen] = React.useState(false);
 
   useEffect(() => {
     if(!props.movie) return;
     setLoading(true);
+    const config = {
+      headers: populateHeaderWithAuthToken()
+    };
     axios
       .get(`/api/collection/?movie=${props.movie.imdbID}`, config)
       .then(response => {
@@ -48,6 +48,9 @@ function DetailsModal(props) {
         .then(response => {
           setLoading(false);
           setSaved(false);
+          setOpen('Deleted from collection');
+          props.onDeleteFromCollection(saved);
+          props.onClose();
         })
         .catch(error => {
           // TODO
@@ -60,15 +63,11 @@ function DetailsModal(props) {
   
       const {movie} = props;
       axios
-        .post('/api/collection/', JSON.stringify({
-          movie: movie.imdbID,
-          title: movie.Title,
-          poster: movie.Poster,
-          year: movie.Year 
-        }), config)
+        .post('/api/collection/', JSON.stringify(convertToNativeFormat(movie)), config)
         .then(response => {
           setLoading(false);
           setSaved(response.data);
+          setOpen('Added to collection');
         })
         .catch(error => {
           // TODO
@@ -79,9 +78,19 @@ function DetailsModal(props) {
     
   };
 
+
+  function handleClose(event, reason) {
+    if (reason === 'clickaway') {
+      return;
+    }
+
+    setOpen(false);
+  }
+
   const { classes, movie, onClose } = props;
 
   return (
+    <>
     <Modal
       aria-labelledby="simple-modal-title"
       aria-describedby="simple-modal-description"
@@ -104,6 +113,17 @@ function DetailsModal(props) {
         )}
       </div>
     </Modal>
+    <Snackbar
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'left',
+      }}
+      open={!!open}
+      autoHideDuration={1000}
+      onClose={handleClose}
+      message={open}
+    />
+  </>
   );
 }
 

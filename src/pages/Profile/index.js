@@ -4,12 +4,12 @@ import MovieList from '../../components/MovieList';
 import { withStyles } from '@material-ui/core/styles';
 import styles from './styles';
 import {populateHeaderWithAuthToken, convertToOMDBFormat} from '../../utils';
-import { Typography } from '@material-ui/core/';
+import { Typography, Button } from '@material-ui/core/';
 import axios from 'axios';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 function Profile(props) {
-  const [savedMovies, setSavedMovies] = useState([]);
+  const [savedMovies, setSavedMovies] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const fetchSavedMovies = () => {
@@ -21,7 +21,7 @@ function Profile(props) {
       .get('/api/collection/', config)
       .then(response => {
         setLoading(false);
-        setSavedMovies(response.data.map(savedMovie => convertToOMDBFormat(savedMovie)));
+        setSavedMovies(response.data);
       })
       .catch(error => {
         // TODO
@@ -29,12 +29,44 @@ function Profile(props) {
       });
   }
 
+  const fetchNextPage = () => {
+    if(!savedMovies) return;
+
+    const config = {
+      headers: populateHeaderWithAuthToken()
+    };
+    setLoading(true);
+    // TODO: add polyfill
+    axios
+      .get(`/api/collection/${new URL(savedMovies.next).search}`, config)
+      .then(response => {
+        setLoading(false);
+        setSavedMovies({
+          next: response.data.next,
+          previous: response.data.previous, 
+          results: [
+            ...savedMovies.results,
+            ...response.data.results
+          ]
+        });
+        console.log(response.data);
+      })
+      .catch(error => {
+        // TODO
+        console.log('fetchNextPage failed', error);
+      });
+  }
+
   useEffect(() => {
     fetchSavedMovies();
   }, []);
 
-  const onModalClose = () => {
-    // fetchSavedMovies();
+  const onDeleteFromCollection = (movie) => {
+    console.log('Deleted', movie);
+    setSavedMovies({
+      ...savedMovies, 
+      results: savedMovies.results.filter(item => item.id !== movie.id)
+    });
   };
 
   const { classes } = props;
@@ -51,7 +83,8 @@ function Profile(props) {
         >
           Saved movies
         </Typography>
-        <MovieList movies={savedMovies} onModalClose={onModalClose} />
+        {savedMovies && <MovieList movies={savedMovies.results.map(m => convertToOMDBFormat(m))} onDeleteFromCollection={onDeleteFromCollection} />}
+        {savedMovies && savedMovies.next && <Button fullWidth onClick={fetchNextPage}>Load more</Button>}
       </div>
     </div>
   );
